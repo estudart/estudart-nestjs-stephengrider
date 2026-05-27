@@ -26,8 +26,8 @@ export class UsersController {
         return this.userService.find(email);
     }
 
-    // @Delete('/user')
-    // deleteUser(@Body() body: ) {
-    //     this.userService.remove()
-    // }
+    @Delete('/:id')
+    deleteUser(@Param('id') id: string) {
+        return this.userService.remove(parseInt(id));
+    }
 }
