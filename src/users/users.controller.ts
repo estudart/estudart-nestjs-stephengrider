@@ -47,6 +47,13 @@ export class UsersController {
         );
     }
 
+    @Post('/signout')
+    async signOut(
+        @Session() session: any,
+    ) {
+        session.userId = null;
+    }
+
     @Post('/signup')
     async creatUser(
         @Body() body: CreateUserDto,
