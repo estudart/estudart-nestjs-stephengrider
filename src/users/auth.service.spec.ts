@@ -3,7 +3,9 @@ import { AuthService } from "./auth.service";
 import { UsersService } from "./users.service";
 import { User } from "./user.entity";
 
-it('can create an instance of AuthService', async () => {
+let service: typeof AuthService;
+
+beforeEach(async () => {
     // Create a fake copy of the UsersService
     const fakeUsersService: Partial<UsersService> = {
         find: () => Promise.resolve([]),
@@ -20,7 +22,9 @@ it('can create an instance of AuthService', async () => {
         ],
     }).compile();
 
-    const service = module.get(AuthService);
+    service = module.get(AuthService);
+})
 
+it('can create an instance of AuthService', async () => {
     expect(service).toBeDefined();
 });
