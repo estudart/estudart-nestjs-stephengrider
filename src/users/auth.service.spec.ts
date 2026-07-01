@@ -54,7 +54,7 @@ describe('AuthService', () => {
         fakeUsersService.find = (email: string) => {
             if (email == 'test@email.com') {
                 return Promise.resolve(
-                    [{ id: 1, email: 'test@email.com', password: 'pass'}]
+                    [{ id: 1, email: 'test@email.com', password: 'pass'} as User]
                 );
             }
             return Promise.resolve([]);
