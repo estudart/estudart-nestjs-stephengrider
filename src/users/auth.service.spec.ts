@@ -63,5 +63,45 @@ describe('AuthService', () => {
             NotFoundException,
         );
     });
+
+    it('throws if an invalid password is provided', async () => {
+        const badPassword = 'bad@pass';
+        const goodPassword = 'good@Pass';
+
+        const hashedPassword = await service.saltHashPassword(goodPassword);
+
+        fakeUsersService.find = (email: string) => {
+            if (email == 'test@email.com') {
+                return Promise.resolve(
+                    [{ id: 1, email: 'test@email.com', password: hashedPassword} as User]
+                );
+            }
+            return Promise.resolve([]);
+        };
+        await expect(service.signin('test@email.com', badPassword)).rejects.toThrow(
+            BadRequestException,
+        );
+    })
+
+    it('returns the user if the correct password is provided', async () => {
+        const goodPassword = 'good@Pass';
+
+        const hashedPassword = await service.saltHashPassword(goodPassword);
+
+        fakeUsersService.find = (email: string) => {
+            if (email == 'test@email.com') {
+                return Promise.resolve(
+                    [{ id: 1, email: 'test@email.com', password: hashedPassword} as User]
+                );
+            }
+            return Promise.resolve([]);
+        };
+        const user = await service.signin('test@email.com', goodPassword);
+        expect(user).toEqual({
+            id: 1,
+            email: 'test@email.com',
+            password: hashedPassword,
+        });
+    })
 });
 
