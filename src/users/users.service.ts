@@ -19,11 +19,19 @@ export class UsersService {
         if (!id) {
             return null;
         }
-        return this.repo.findOneBy({id});
+        const user = this.repo.findOneBy({id});
+        if (!user) {
+            throw new NotFoundException('User not found');
+        };
+        return user;
     };
 
     find(email: string) {
-        return this.repo.find( { where: { email } });
+        const user = this.repo.find( { where: { email } });
+        if (!user) {
+            throw new NotFoundException('User not found');
+        };
+        return user;
     };
 
     async update(id: number, updateParams: Partial<User>) {
