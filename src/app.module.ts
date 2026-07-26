@@ -29,12 +29,6 @@ const cookieSession = require('cookie-session');
         };
       },
     })
-    // TypeOrmModule.forRoot({
-    //   type: 'sqlite',
-    //   database: 'db.sqlite',
-    //   entities: [User, Report],
-    //   synchronize: true, 
-    // })
   ],
   controllers: [AppController],
   providers: [
