@@ -20,18 +20,22 @@ export class AuthService {
         return (await scrypt(password, salt, 32)) as Buffer;
     }
 
+    public async saltHashPassword(password: string): Promise<string> {
+        const salt = this.generateSalt();
+        const hash = await this.hashPassword(password, salt);
+        const result = salt + '.' + hash.toString('hex');
+
+        return result;
+    }
+
     async signup(email: string, password: string) {
         const users = await this.usersService.find(email);
         if (users.length) {
             throw new BadRequestException('Email in use!');
         }
 
-        const salt = this.generateSalt();
-        const hash = await this.hashPassword(password, salt);
-        const result = salt + '.' + hash.toString('hex');
-
+        const result = await this.saltHashPassword(password);
         const user = this.usersService.create(email, result);
-
         return user;
     }
 
